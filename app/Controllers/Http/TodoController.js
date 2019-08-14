@@ -2,16 +2,26 @@
 
 const Todo = use('App/Models/Todo');
 const User = use('App/Models/User');
-
 class TodoController {
   //User'a Ait Todoların Gösterimi
   async all({ request, response, view }) {
-    let todos = await User.query().with('todos').fetch()
+    //Hangi Sayfa ve Kaç kayıt geleceğinin kontrolü
+    const page = request.input('page') || 1
+    let perPage = request.input('perPage') || 5
+    //Eğer perPage 100'den fazla gönderilmişsse 100'e çeviriyoruz
+    perPage = (perPage > 100 ) ? 100 : perPage;
+    let todos = await User.query().with('todos').orderBy('id', 'desc').paginate(page,perPage)
     return response.json(todos)
   }
   //Tüm Todoların Gösterimi
   async index({ request, response, view }) {
-    let todos = await Todo.query().fetch()
+    //Hangi Sayfa ve Kaç kayıt geleceğinin kontrolü
+    const page = request.input('page') || 1
+    let perPage = request.input('perPage') || 5
+    //Eğer perPage 100'den fazla gönderilmişsse 100'e çeviriyoruz
+    perPage = (perPage > 100 ) ? 100 : perPage;
+
+    let todos = await Todo.query().orderBy('id', 'desc').paginate(page,perPage)
     return response.json(todos)
   }
   //Todo Ekleme
