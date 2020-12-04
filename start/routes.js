@@ -16,16 +16,15 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.post('/auth/register', 'AuthController.register')
-Route.post('/auth/login', 'AuthController.login')
-
-
-Route.put('/api/todos/:id', 'TodoController.update').middleware('auth')
-Route.delete('/api/todos/id', 'TodoController.destroy').middleware('auth')
-Route.post('/api/todos', 'TodoController.save').middleware('auth')
-Route.get('/api/todos', 'TodoController.index').middleware('auth')
-Route.get('/api/all', 'TodoController.all').middleware('auth')
-
 Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
 })
+
+Route.get('/api/all', 'TodoController.all').middleware('auth')
+Route.get('/api/todos', 'TodoController.index').middleware('auth')
+Route.post('/api/todos', 'TodoController.store').middleware('auth')
+Route.put('/api/todos/:id', 'TodoController.update').middleware('auth')
+Route.delete('/api/todos/:id', 'TodoController.destroy').middleware('auth')
+
+Route.post('/auth/register', 'AuthController.register')
+Route.post('/auth/login', 'AuthController.login')
